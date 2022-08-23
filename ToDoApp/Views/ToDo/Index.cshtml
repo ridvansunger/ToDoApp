@@ -1,0 +1,98 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+@using ToDoApp.Entities
+
+@model List<ToDo>
+
+
+<h1>Yapılacaklar Listesi</h1>
+<br />
+<div class="row">
+    <a class="btn btn-secondary" asp-action="CreateToDo" asp-controller="ToDo">Görev Ekle</a>
+</div>
+
+
+<div class="row" style="margin-top:50px;">
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Başlık</th>
+                <th>Açıklama</th>
+                <th>Oluşturma Tarihi</th>
+                <th>Görev Bitiş Tarihi</th>
+                <th>Sonuç</th>
+                <th>Görev Düzenleme</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td> <input type="checkbox" name="@item.AktifMi" checked="@item.AktifMi"></td>
+                <td>@item.Baslik</td>
+                <td>@item.Aciklama</td>
+                <td>@(((DateTime)item.OlusturmaTarihi).ToString("dd-MMM-yyyy hh:mm"))</td>
+                @if (item.BitisTarihi != null)
+                {
+                    <td>@(((DateTime)item.BitisTarihi).ToString("dd-MMM-yyyy hh:mm"))</td>
+                }
+                else
+                {
+                    <td>--</td>
+                }
+                @if (item.AktifMi == false)
+                {
+                    <td><a class="btn btn-danger btn-block">Tamamlanmadı</a></td>
+                }
+                else
+                {
+                    <td><a class="btn btn-success btn-block">Tamamlandı</a></td>
+                }
+            <td>
+                <a asp-action="DeleteToDo" asp-controller="ToDo" asp-route-id="@item.ID" class="btn btn-danger" onclick="return confirm('Görevi Silmek İstiyor musunuz?')">Sil</a>
+                <a asp-action="UpdateToDo" asp-controller="ToDo" asp-route-id="@item.ID" class="btn btn-warning" >Güncelle</a>
+
+            </td>
+            </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<script></script>
+<script>
+
+    //$(document).ready(() => {
+    //    control();
+    //    setInterval(control, 100000);
+    //})
+
+    const control = () => {
+        $.ajax({
+            type: "GET",
+            url: "/ToDo/ControlToDo",
+            success: function (data) {
+                const yeniData = data.map((todo) => {
+                    return todo.baslik;
+                });
+
+                if (yeniData.length>0) {
+                    //console.log(yeniData);
+                    alert(yeniData);
+                }
+                else {
+                    alert("Öncelikli Görev Bulunamadı")
+                }
+               
+            }
+        })
+    };
+    setInterval(control, 100000);
+   
+</script>

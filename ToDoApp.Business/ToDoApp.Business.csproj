@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ToDoApp.DAL\ToDoApp.DAL.csproj" />
+    <ProjectReference Include="..\ToDoApp.Entities\ToDoApp.Entities.csproj" />
+  </ItemGroup>
+
+</Project>
